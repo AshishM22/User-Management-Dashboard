@@ -107,8 +107,6 @@ const AdminPanel = () => {
 
   const submitNewUser = async (e) => {
     try {
-      e.preventDefault();
-
       const newUser = {
         name: name,
         email: email,
