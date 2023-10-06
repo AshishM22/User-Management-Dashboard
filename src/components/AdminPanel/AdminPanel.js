@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Table from "../Table/Table";
 import Pagination from "../Pagination/Pagination";
+import NewUser from "../NewUser/NewUser";
 
 const AdminPanel = () => {
   const backendURL = "https://jsonplaceholder.typicode.com/users";
@@ -26,18 +27,44 @@ const AdminPanel = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = users.slice(startIndex, endIndex);
 
+  // State to check weather new User form is visible
+  const [newUserForm, setNewUserForm] = useState(false);
+
+  // State to store new User Details
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
   // To delete single user through the icon provided at right side of each user
-  const handleDelete = (id) => {
-    const updatedUsers = users.filter((post) => post.id !== id);
-    setUsers(updatedUsers);
+  const handleDelete = async (id) => {
+    try {
+      // First we will send Delete request to backend Api using Axios
+      const deleteURL = `${backendURL}/id`;
+      axios.delete(deleteURL);
+
+      // We will update our state to remove that user
+      const updatedUsers = users.filter((post) => post.id !== id);
+      setUsers(updatedUsers);
+    } catch (err) {
+      window.alert(err);
+    }
   };
 
   // This function will be called when we press save Icon after performing required update on User
-  const handleSave = (updatedItem) => {
-    const updatedUsers = users.map((item) =>
-      item.id === updatedItem.id ? updatedItem : item
-    );
-    setUsers(updatedUsers);
+  const handleSave = async (updatedItem) => {
+    try {
+      const id = updatedItem.id;
+
+      const updateURL = `${backendURL}/${id}`;
+      const response = await axios.put(updateURL, updatedItem);
+      console.log(response);
+
+      const updatedUsers = users.map((item) =>
+        item.id === updatedItem.id ? updatedItem : item
+      );
+      setUsers(updatedUsers);
+    } catch (err) {
+      window.alert(err);
+    }
   };
 
   // Used to Select and Deselect Rows and store data in our selectedLine array
@@ -61,14 +88,40 @@ const AdminPanel = () => {
   };
 
   // This function is similar to above Delete function but only difference here is it delete all the selected user at once
-  const handleDeleteSelected = () => {
-    const updatedUsers = users.filter((user) => !selectedLine.includes(user));
-    setUsers(updatedUsers);
-    setSelectedLine([]);
+  const handleDeleteSelected = async () => {
+    try {
+      for (const user of selectedLine) {
+        await axios.delete(`${backendURL}/${user.id}`);
+      }
+      const updatedUsers = users.filter((user) => !selectedLine.includes(user));
+      setUsers(updatedUsers);
+      setSelectedLine([]);
+    } catch (err) {
+      window.alert(err);
+    }
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const submitNewUser = async (e) => {
+    try {
+      e.preventDefault();
+
+      const newUser = {
+        name: name,
+        email: email,
+        id: users.length + Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+      };
+
+      const response = await axios.post(backendURL, newUser);
+      setUsers([...users, newUser]);
+      setName("");
+      setEmail("");
+    } catch (err) {
+      window.alert(err);
+    }
   };
 
   return (
@@ -88,9 +141,17 @@ const AdminPanel = () => {
         />
       </main>
 
-      <footer>
+      <div className="user-management-section">
         <button className="delete-selected" onClick={handleDeleteSelected}>
           Delete Selected
+        </button>
+
+        {/* This button will show or hide the New user registration form i.e It will toggle the state  */}
+        <button
+          className="add-user--button"
+          onClick={() => setNewUserForm(!newUserForm)}
+        >
+          Register New User
         </button>
 
         <Pagination
@@ -98,6 +159,18 @@ const AdminPanel = () => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
+      </div>
+
+      <footer>
+        {newUserForm && (
+          <NewUser
+            name={name}
+            email={email}
+            setName={setName}
+            setEmail={setEmail}
+            submitNewUser={submitNewUser}
+          />
+        )}
       </footer>
     </section>
   );
