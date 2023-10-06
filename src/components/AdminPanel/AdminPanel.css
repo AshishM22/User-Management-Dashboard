@@ -1,0 +1,13 @@
+.main-heading{
+    text-align: center;
+    color: brown;
+}
+
+.delete-selected {
+    background-color: #FF6783;
+    /* background-color: brown; */
+    color: white;
+    width: 8rem;
+    height: 1.5rem;
+    border-radius: 1rem;
+}
