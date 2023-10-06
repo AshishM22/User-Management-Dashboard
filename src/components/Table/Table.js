@@ -1,9 +1,25 @@
 import "./Table.css";
+import { useState } from "react";
 
-import React from "react";
+const Table = ({}) => {
+  return (
+    <div>
+      <table>
+        <thead>
+          <th>
+            <input type="checkbox" />
+          </th>
 
-const Table = () => {
-  return <div></div>;
+          <th> Name </th>
+          <th> Email </th>
+          <th> ID </th>
+          <th> Actions </th>
+        </thead>
+
+        <tbody></tbody>
+      </table>
+    </div>
+  );
 };
 
 export default Table;
