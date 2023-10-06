@@ -67,6 +67,10 @@ const AdminPanel = () => {
     setSelectedLine([]);
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <section>
       <header>
@@ -89,7 +93,11 @@ const AdminPanel = () => {
           Delete Selected
         </button>
 
-        <Pagination />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </footer>
     </section>
   );

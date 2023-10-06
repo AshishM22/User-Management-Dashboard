@@ -1,0 +1,23 @@
+.pagination-button,
+.active,
+.disabled {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 100%;
+    margin-right: 1rem;
+}
+
+.pagination-button {
+    background-color: #1E93FF;
+    color: white;
+    border: none;
+}
+
+.active {
+    border: 1px solid #1E93FF;
+    background: transparent;
+}
+
+.disabled {
+    cursor: not-allowed
+}

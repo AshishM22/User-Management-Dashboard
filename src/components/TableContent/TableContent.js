@@ -1,6 +1,7 @@
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { FaEdit, FaSave } from "react-icons/fa";
 import { useState, useEffect } from "react";
+import "./TableContent.css";
 
 const TableContent = ({
   user,
