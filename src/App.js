@@ -2,11 +2,7 @@ import "./App.css";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 function App() {
-  return (
-    <div>
-      <AdminPanel />
-    </div>
-  );
+  return <AdminPanel />;
 }
 
 export default App;

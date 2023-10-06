@@ -1,22 +1,50 @@
 import "./Table.css";
-import { useState } from "react";
+import TableContent from "../TableContent/TableContent";
 
-const Table = ({}) => {
+const Table = ({
+  users,
+  handleDelete,
+  handleSave,
+  selectedLine,
+  handleSelectAll,
+  handleRowSelect,
+}) => {
+  const allSelected = selectedLine.length === users.length;
+  const lineSelected = (user) => selectedLine.includes(user);
+
   return (
     <div>
       <table>
         <thead>
           <th>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={allSelected}
+              onChange={handleSelectAll}
+            />
           </th>
 
           <th> Name </th>
           <th> Email </th>
-          <th> ID </th>
+          <th> Id </th>
           <th> Actions </th>
         </thead>
 
-        <tbody></tbody>
+        <tbody>
+          {users.map((user) => {
+            return (
+              <TableContent
+                key={user.id}
+                user={user}
+                handleDelete={handleDelete}
+                id={user.id}
+                handleSave={handleSave}
+                lineSelected={lineSelected}
+                handleRowSelect={handleRowSelect}
+              />
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );
